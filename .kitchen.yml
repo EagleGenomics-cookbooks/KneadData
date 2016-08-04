@@ -12,11 +12,13 @@ verifier:
   name: inspec
   # sudo: false # if 'true' (default) inSpec will run tests as 'root', rather than 'kitchen'
   format: doc
+  # sudo_command: '. /etc/profile;' # needed for centos
+
 
 platforms:
   - name: ubuntu-16.04
     driver_config:
-      instance_name: kneaddata
+      instance_name: kneaddata-ubuntu1604
   # - name: centos-7.2
 
 suites:
