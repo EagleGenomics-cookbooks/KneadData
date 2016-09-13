@@ -42,3 +42,7 @@ python_execute 'setup.py' do
   command 'setup.py install --bypass-dependencies-install'
   python '2'
 end
+
+magic_shell_environment 'KNEADDATA_VERSION' do
+  value node['KneadData']['version']
+end

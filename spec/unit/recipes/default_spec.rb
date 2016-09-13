@@ -26,4 +26,9 @@ describe 'KneadData::default' do
   it 'includes the `poise-python` recipe' do
     expect(chef_run).to include_recipe('poise-python')
   end
+
+  # make sure that the KneadData version env variable is set
+  it 'adds KneadData version env variable' do
+    expect(chef_run).to add_magic_shell_environment('KNEADDATA_VERSION')
+  end
 end
