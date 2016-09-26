@@ -9,4 +9,7 @@ company_cookbook 'Bowtie'
 
 cookbook 'tarball', git: 'https://github.com/ooyala/tarball-chef-cookbook.git'
 
+# Use pull request for magic_shell to get filename functionality
+cookbook 'magic_shell', git: 'git@github.com:cvrabie/magic_shell.git'
+
 metadata
