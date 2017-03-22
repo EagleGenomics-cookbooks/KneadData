@@ -1,40 +1,37 @@
 sudo: required
 dist: trusty
-
 addons:
   apt:
     sources:
     - chef-stable-trusty
     packages:
     - chefdk
-
 install: echo "skip bundle install"
-
 branches:
   only:
   - master
-
 services: docker
-
 env:
   global:
   - RUBYOPT="-W0"
+  - secure: WjX2nTVzvaPxpKSuv14dPQr5Mksi/0Cnv/7Ap2YkWYjKEAnJiv+d7SS4hb2iSAA4D1q3vhQDctZ/48w7mNQGJDWecg8K5IclxmjB3ydf9T76X7H+xVxDAhiaJze+U0J8ZCX/TbY/9MTqC3RlXM12O4p2QdE+rNBdp+1E0lHyD/6u7O1PMRD+jFFLPML08Mj+NpK1z2fiuB/07WlaEkXgZE7MmdIWbuLEojHnq+WLjAHrQQMUXOr9RRh8+ls8YLhuUwfdqjGot4EhTgsBMQaKwX7HEHOE6J6FhzlxCuPPHet/IAO5QcnsZ/xxMSLlJqVczrXqXl/KrpfDKFu7bnjBqjq7bZ61BslsaErx4SYln83EJqba4vtEooN8TFdniT81PP7kzVdiq6WpEGXoLhFAh7J9ynPmFUOj21pIA0Pr/z7k4rnRW1a8vYFJJPl3aThQfjEKT8WI1hd1JQxCtUjzuLh1ExOydRm3gbVOlB2CwZj45PcowOJQZV5mKImWQDa+nw0y6csmC2HZF8+C4gxyjOe3FArfKwtKMuuOsqblpQp5bn+rnPtwWYGnHujjiw2G4Ww98d9wNmttH3VAw7m6KYXN5wZuO9/h7JfpNvKsddMkqnk0nx9+JuUJE0gAlikhufno/A6GbpkWssG9du5I8g1zCWlnifu5T1lhZQi+33A=
   matrix:
   - CHEF_VERSION=current INSTANCE=default-ubuntu-1604
-
 before_script:
 - sudo iptables -L DOCKER || ( echo "DOCKER iptables chain missing" ; sudo iptables
   -N DOCKER )
 - eval "$(/opt/chefdk/bin/chef shell-init bash)"
 - chef gem install kitchen-docker
 - "/opt/chefdk/bin/chef exec rake tests"
-
 script:
 - KITCHEN_LOCAL_YAML=.kitchen.docker.yml /opt/chefdk/embedded/bin/kitchen verify ${INSTANCE}
-
 notifications:
   slack:
     secure: by6aYs36h48hqoFEBg6jX66VqWEYAypLZYXY/OFA0khg5CeOEEZi3Ao6lgNefh6LEoDAApRU82vGzE6HDvV3lk1oDCpYktgazrjNKtCdPXqfomTkHyWGpwCR6S6a7HMy25ZizI85NAcfQYJIoZb3rG16MlXHSMQ/dLXq28UiM8xx4OpHA7gTASMrhL7zsiQiPCtEQlwBjEES7BOIYc6aE3cealX/ZKMpubsiQZYPjbC6AVoFhlC3uMGW+FYcAUrQMlSp8leZmjr7/JP8d8lF6XpBoOBayZqykCYsg38odmBwnte42LrMkMGq4CgUqAxU3mdRFISqdoHXx8ukibueRQuyaKeqQE2J/nXVM3L95+Ac4U/9lxAQaUHPa0NAzWCQuC31moBw1dOQUjmGbjHs7sxB3z0RYMa9Mk/qiNQdMd4Jlr8pJD1ekb8xZ+7CqjbzRGOD9kvJ7luylqxBG2RTOW0LnWqBvwOEVh1lAPsKVxdnmO5D6/on+NoUOxFUg58PY2XQZKTbCzt5kLlXf5Z7Pj125S5r+jO9LCBkNVZz9TuTNdWnLcornDnpGKYz7ns82q22cZEDVuO7idj5DqMJp9wG7KoP2Bbmi8jBe2MKywMg5WQPxPdVk2tqa5NHYZYOacU+iuf78CAUcuxqjgbRjwSEGToEdNBCK5yDuionhDc=
   email:
     on_success: change
     on_failure: always
+after_success:
+- chmod +x trigger_dependent_build.sh
+- "./trigger_dependent_build.sh EagleGenomics-cookbooks KneadData-runnable private
+  $TRAVIS_ACCESS_TOKEN"
