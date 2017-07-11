@@ -16,9 +16,9 @@ verifier:
 
 
 platforms:
-  - name: ubuntu-16.04
+  - name: ubuntu-14.04
     driver_config:
-      instance_name: kneaddata-ubuntu1604
+      instance_name: kneaddata-ubuntu1404
   # - name: centos-7.2
 
 suites:
