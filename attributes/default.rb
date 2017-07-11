@@ -11,4 +11,4 @@ default['Bowtie']['version'] = '2.2.9'
 
 # KneadData attributes
 default['KneadData']['version'] = 'v0.5.1'
-default['KneadData']['install_dir'] = '/usr/local/'
+default['KneadData']['install_dir'] = '/usr/local'

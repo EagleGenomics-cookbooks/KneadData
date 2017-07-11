@@ -22,11 +22,10 @@ remote_file "#{Chef::Config[:file_cache_path]}/#{kneaddata_file_name}" do
 end
 
 # extract the KneadData tar ball
-tarball_x "#{Chef::Config[:file_cache_path]}/#{kneaddata_file_name}" do
-  destination node['KneadData']['install_dir']
-  owner 'root'
-  group 'staff'
-  action :extract
+tar_extract "#{Chef::Config[:file_cache_path]}/#{kneaddata_file_name}" do
+  action :extract_local
+  target_dir node['KneadData']['install_dir']
+  creates "#{node['KneadData']['install_dir']}/#{kneaddata_file_base}"
 end
 
 # install the Python runtime
