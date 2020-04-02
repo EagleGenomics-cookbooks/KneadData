@@ -5,7 +5,7 @@
 # Copyright:: 2019, Eagle Genomics Ltd, All Rights Reserved.
 apt_update if node['platform_family'] == 'debian'
 include_recipe 'java'
-include_recipe 'poise-python'
+include_recipe 'python_setup'
 include_recipe 'Bowtie'
 
 ##########################################################
@@ -26,18 +26,13 @@ tar_extract "#{Chef::Config[:file_cache_path]}/#{kneaddata_file_name}" do
   creates "#{node['KneadData']['install_dir']}/#{kneaddata_file_base}"
 end
 
-# install the Python runtime
-python_runtime '2' do
-  version '2.7'
-end
-
 # install the KneadData tool
 # TODO: ideally we don't want to install all the default dependencies, but
 # rather provide the ones we need separately
-python_execute 'setup.py' do
+pyenv_script 'setup.py' do
   cwd "#{node['KneadData']['install_dir']}/#{kneaddata_file_base}"
-  command 'setup.py install --bypass-dependencies-install'
-  python '2'
+  code 'python setup.py install --bypass-dependencies-install'
+  pyenv_version node['python']['version']
 end
 
 magic_shell_environment 'KNEADDATA_VERSION' do

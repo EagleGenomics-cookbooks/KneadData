@@ -5,6 +5,7 @@ def company_cookbook(name, version = '>= 0.0.0', options = {})
 end
 
 company_cookbook 'Bowtie'
+company_cookbook 'python_setup'
 cookbook 'tarball', git: 'https://github.com/ooyala/tarball-chef-cookbook.git'
 
 # Use pull request for magic_shell to get filename functionality
