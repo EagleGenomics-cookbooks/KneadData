@@ -9,7 +9,6 @@ version '0.1.4'
 source_url 'https://github.com/EagleGenomics-cookbooks/KneadData'
 issues_url 'https://github.com/EagleGenomics-cookbooks/KneadData/issues'
 
-depends 'apt'
 depends 'java'
 depends 'tar'
 depends 'magic_shell', '~> 1.0'
